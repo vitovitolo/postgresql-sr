@@ -1,0 +1,18 @@
+#! /bin/sh
+DEST=$1
+DESTDIR=$2
+
+#Set standby node
+#ssh  -i /var/lib/postgresql/.ssh/id_rsa $DEST "mv $DESTDIR/recovery.done $DESTDIR/recovery.conf" 2>&1 | logger -i
+#if [ $? -eq 0 ] ; then
+#   logger "$0 - recovery.conf created succesfully at "$DESTDIR
+#fi
+# Startup PostgreSQL server
+logger "$0 - Postgresql remotely starting node: "$DEST
+ssh  -i /var/lib/postgresql/.ssh/id_rsa -T $DEST "service postgresql start" 2>&1 | logger -i
+
+#Stop archiving files 
+#logger "$0 - Stoping backup. Removing backup trigger file.."
+#rm $DESTDIR/backup_in_progress 2>&1 | logger -i
+
+exit 0
